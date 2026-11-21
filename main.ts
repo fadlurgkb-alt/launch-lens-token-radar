@@ -1,4 +1,4 @@
-import { cpSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { cpSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { buildRows, type Protocol } from './lib/model.ts';
@@ -25,8 +25,8 @@ if (rows.some((row, i) => row.rank !== i + 1 || (i > 0 && row.implied_value_usd 
   throw new Error('Rank and implied-value ordering invariant failed');
 }
 
-rmSync(output, { recursive: true, force: true });
 mkdirSync(output, { recursive: true });
+for (const name of readdirSync(output)) rmSync(resolve(output, name), { recursive: true, force: true });
 cpSync(resolve(botDir, 'dashboard'), resolve(output, 'dashboard'), { recursive: true });
 cpSync(resolve(botDir, 'screenshots'), resolve(output, 'screenshots'), { recursive: true });
 writeFileSync(resolve(output, 'board.json'), `${JSON.stringify({ schema: 'launch-lens/v1', as_of: snapshot.as_of, rows }, null, 2)}\n`);

@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Launch Lens — Token Launch Radar</title><link rel="stylesheet" href="app.css">
+</head>
+<body>
+  <header><div class="brand"><span class="mark">LL</span><div><b>LAUNCH LENS</b><small>Token readiness intelligence</small></div></div><div class="stamp"><span>SNAPSHOT</span><b id="asof">—</b></div></header>
+  <main>
+    <section class="hero"><div><p class="eyebrow">DEFI / PRE-TOKEN DISCOVERY</p><h1>Find signal before<br><em>the ticker.</em></h1><p class="dek">A transparent, snapshot-only valuation radar. Not a token launch prediction.</p></div><div class="metrics"><article><span>MODELED VALUE</span><b id="total">—</b><small>across visible protocols</small></article><article><span>NO TOKEN RECORD</span><b id="precount">—</b><small>DefiLlama record status</small></article><article><span>WATCHLIST COVERAGE</span><b>40 / 40</b><small>house floor fully covered</small></article></div></section>
+    <section class="method"><b>VALUE MODEL</b><code>TVL × category multiple × 7d growth × tracked age × chain breadth × token-record factor</code><span>Growth capped 0.72–1.34 · recorded benchmark ×0.01</span></section>
+    <section class="controls"><label class="search">⌕ <input id="search" placeholder="Search protocol, chain, category…"></label><select id="status"><option value="all">All token records</option><option value="unrecorded">No token recorded</option><option value="recorded">Token recorded</option></select><select id="risk"><option value="all">All risk levels</option><option value="lower">Lower risk</option><option value="moderate">Moderate risk</option><option value="elevated">Elevated risk</option></select><select id="category"><option value="all">All categories</option></select><button id="reset">Reset</button></section>
+    <div class="boardhead"><div><b>OPPORTUNITY BOARD</b><span id="count">—</span></div><p>Click any protocol to inspect thesis, factors, and execution plan.</p></div>
+    <div class="tablewrap"><table><thead><tr><th data-sort="rank">Rank</th><th data-sort="name">Protocol</th><th data-sort="implied_value_usd">Implied value ↓</th><th data-sort="tvl_usd">TVL</th><th data-sort="change_7d">7d</th><th data-sort="age_days">Age</th><th data-sort="risk">Risk</th><th>Record</th></tr></thead><tbody id="rows"></tbody></table></div>
+  </main>
+  <aside id="detail" aria-hidden="true"><button class="close" id="close">×</button><div id="detailbody"></div></aside><div id="shade"></div>
+  <script src="app.js"></script>
+</body></html>

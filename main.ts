@@ -1,5 +1,6 @@
 import { cpSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
-import { resolve } from 'node:path';
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { buildRows, type Protocol } from './lib/model.ts';
 import { buildDossier } from './vendor/makefun-board.ts';
 
@@ -9,7 +10,10 @@ const arg = (name: string): string | undefined => {
   const i = process.argv.indexOf(name);
   return i >= 0 ? process.argv[i + 1] : undefined;
 };
-const input = resolve(arg('--input') ?? '/input/snapshot.json');
+const botDir = resolve(process.env.MAKEFUN_BOT_DIR ?? dirname(fileURLToPath(import.meta.url)));
+const inputDir = resolve(process.env.MAKEFUN_INPUT_DIR ?? '/input');
+const inputArg = arg('--input');
+const input = inputArg ? resolve(inputArg) : resolve(inputDir, 'snapshot.json');
 const output = resolve(process.env.MAKEFUN_OUTPUT_DIR ?? '/output');
 const snapshot = JSON.parse(readFileSync(input, 'utf8')) as Snapshot;
 const rows = buildRows(snapshot.protocols, snapshot.watchlist, snapshot.as_of);
@@ -23,8 +27,8 @@ if (rows.some((row, i) => row.rank !== i + 1 || (i > 0 && row.implied_value_usd 
 
 rmSync(output, { recursive: true, force: true });
 mkdirSync(output, { recursive: true });
-cpSync(resolve('dashboard'), resolve(output, 'dashboard'), { recursive: true });
-cpSync(resolve('screenshots'), resolve(output, 'screenshots'), { recursive: true });
+cpSync(resolve(botDir, 'dashboard'), resolve(output, 'dashboard'), { recursive: true });
+cpSync(resolve(botDir, 'screenshots'), resolve(output, 'screenshots'), { recursive: true });
 writeFileSync(resolve(output, 'board.json'), `${JSON.stringify({ schema: 'launch-lens/v1', as_of: snapshot.as_of, rows }, null, 2)}\n`);
 writeFileSync(resolve(output, 'dashboard/data.dat'), `${JSON.stringify({ as_of: snapshot.as_of, floor_usd: snapshot.floor_usd, rows })}\n`);
 writeFileSync(resolve(output, 'dossier.json'), buildDossier(output, { text_max_bytes: 65536 }));
